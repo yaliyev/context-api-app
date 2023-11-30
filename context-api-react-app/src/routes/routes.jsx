@@ -11,6 +11,10 @@ export const ROUTES = [
                 element: <Categories/>
             },
             {
+                path:'categories',
+                element: <Categories/>
+            },
+            {
                 path:'basket',
                 element:<Basket/>
             }
