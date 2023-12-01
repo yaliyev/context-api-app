@@ -1,17 +1,17 @@
 import React, { useContext, useEffect } from 'react'
 import { Table } from 'antd'
-import {Button} from 'antd'
+import { Button } from 'antd'
 import { CategoriesContext } from '../../services/context'
 import { BasketContext } from '../../services/context'
 import { getCategories } from '../../services/api/categories_request'
 const Categories = () => {
 
-  
+
 
   const { categories, setCategories } = useContext(CategoriesContext);
   const { basket, setBasket } = useContext(BasketContext);
-  
-  
+
+
 
   useEffect(() => {
     async function loadData() {
@@ -28,21 +28,21 @@ const Categories = () => {
       title: 'ID',
       dataIndex: 'id',
       key: 'id',
-      sorter: (a,b) =>{return Number(a.id) - Number(b.id)},
-      sortDirections: ['ascend','descend']
+      sorter: (a, b) => { return Number(a.id) - Number(b.id) },
+      sortDirections: ['ascend', 'descend']
 
     },
     {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      filters:[
+      filters: [
         {
-            text:'Categories starting with C letter',
-            value: ''
+          text: 'Categories starting with C letter',
+          value: ''
         }
-    ],
-    onFilter: (value, record) => record.name[0].toLowerCase() == 'c'
+      ],
+      onFilter: (value, record) => record.name[0].toLowerCase() == 'c'
     },
     {
       title: 'Description',
@@ -50,16 +50,16 @@ const Categories = () => {
       key: 'description',
     },
     {
-      title:'Actions',
+      title: 'Actions',
       render: (text, record) => (
-                <>
-                    <Button type="primary" onClick={()=>{addToBasket(record)}}>
-                        Basket
-                    </Button>
+        <>
+          <Button type="primary" onClick={() => { addToBasket(record) }}>
+            Basket
+          </Button>
 
-                </>
+        </>
 
-            )
+      )
     }
 
   ];
@@ -70,11 +70,22 @@ const Categories = () => {
     }
   });
 
-  function addToBasket(item){
-     const data = [...basket];
-     data.push(item);
-     setBasket(data);
-     localStorage.setItem('context-app-basket',JSON.stringify(data)); 
+  function addToBasket(item) {
+    const data = [...basket];
+    let existItemIndex = -1;
+    const existsItem = data.find((element, index) => {
+      existItemIndex = index;
+      return element.id == item.id
+    });
+    if (existsItem == undefined) {
+      let basketItem = { item, quantity: 1 };
+      data.push(basketItem);
+    } else {
+      data[existItemIndex].quantity++;
+    }
+    setBasket(data);
+    localStorage.setItem('context-app-basket', JSON.stringify(data));
+
   }
 
   return (
