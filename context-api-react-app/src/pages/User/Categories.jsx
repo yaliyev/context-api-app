@@ -21,17 +21,26 @@ const Categories = () => {
       title: 'ID',
       dataIndex: 'id',
       key: 'id',
+      sorter: (a,b) =>{return Number(a.id) - Number(b.id)},
+      sortDirections: ['ascend','descend']
 
-    },
-    {
-      title: 'Description',
-      dataIndex: 'description',
-      key: 'description',
     },
     {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+      filters:[
+        {
+            text:'Categories starting with C letter',
+            value: ''
+        }
+    ],
+    onFilter: (value, record) => record.name[0].toLowerCase() == 'c'
+    },
+    {
+      title: 'Description',
+      dataIndex: 'description',
+      key: 'description',
     },
     {
       title:'Actions',
