@@ -4,6 +4,9 @@ import { Button } from 'antd'
 import { CategoriesContext } from '../../services/context'
 import { BasketContext } from '../../services/context'
 import { getCategories } from '../../services/api/categories_request'
+import Swal from 'sweetalert2'
+
+
 const Categories = () => {
 
 
@@ -80,6 +83,14 @@ const Categories = () => {
     if (existsItem == undefined) {
       let basketItem = { item, quantity: 1 };
       data.push(basketItem);
+
+      Swal.fire({
+        icon: "success",
+        title: "Basket operation",
+        text: "Item has been added to basket :-)",
+        timer: 1300
+      });
+
     } else {
       data[existItemIndex].quantity++;
     }
