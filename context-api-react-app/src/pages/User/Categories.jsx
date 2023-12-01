@@ -2,10 +2,17 @@ import React, { useContext, useEffect } from 'react'
 import { Table } from 'antd'
 import {Button} from 'antd'
 import { CategoriesContext } from '../../services/context'
+import { BasketContext } from '../../services/context'
 import { getCategories } from '../../services/api/categories_request'
 const Categories = () => {
 
+  
+
   const { categories, setCategories } = useContext(CategoriesContext);
+  const { basket, setBasket } = useContext(BasketContext);
+  
+  
+
   useEffect(() => {
     async function loadData() {
       let data = await getCategories();
@@ -46,7 +53,7 @@ const Categories = () => {
       title:'Actions',
       render: (text, record) => (
                 <>
-                    <Button type="primary">
+                    <Button type="primary" onClick={()=>{addToBasket(record)}}>
                         Basket
                     </Button>
 
@@ -62,6 +69,13 @@ const Categories = () => {
       key: category.id
     }
   });
+
+  function addToBasket(item){
+     const data = [...basket];
+     data.push(item);
+     setBasket(data);
+     localStorage.setItem('context-app-basket',JSON.stringify(data)); 
+  }
 
   return (
     <Table columns={columns} dataSource={data} />
